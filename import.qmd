@@ -25,12 +25,9 @@ citation: true
 bibliography: references.bib
 ---
 
-Il est maintenant le temps de décrire votre projet avant de passer au document
-suivant, soit l'importation et la manipulation des données.
+Il est maintenant le temps de décrire votre projet avant de passer au document suivant, soit l'importation et la manipulation des données.
 
-Je vous conseille d'écrire cette partie en dernier, une fois que vous aurez
-déjà vos résultats et figures afin d'éviter de réécrire cette page plusieurs
-fois.
+Je vous conseille d'écrire cette partie en dernier, une fois que vous aurez déjà vos résultats et figures afin d'éviter de réécrire cette page plusieurs fois.
 
 ::: callout-important
 N'oubliez pas d'inclure vos références sur chacune des pages!
@@ -39,3 +36,45 @@ N'oubliez pas d'inclure vos références sur chacune des pages!
 Par exemple:
 
 > Les données proviennent entre autres de @owidenergy.
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+library(fs)
+library(lubridate)
+library(tidyverse)
+library(skimr)
+```
+
+pour télécharger les données directements en ligne
+
+```{r download, cache=TRUE}
+
+URL <- "https://github.com/FAS1002/A22/raw/b490f67dfd8261c10d37e1d6670a2ac681b4e223/assets/fichiers/olympic_archive.zip"
+
+bas_path <- path("data", "raw")
+
+fname <- paste(today(), "olympique_archive.zip", sep = "_")
+
+fpath <- path(bas_path, fname)
+
+download.file(url = URL, 
+              destfile = fpath)
+
+
+```
+
+```{r extraction}
+
+unzip(zipfile = fpath,
+      exdir = bas_path) #pas besoine du exdir mais cela veut dire ou dezip le doc
+
+
+```
+
+Nous voyons donc qu'il y a deux nouveaux fichiers :
+
+```{r read}
+ df <-  read.csv(file = path(bas_path, "athlete_events.csv"))
+ 
+ 
+ 
+```
