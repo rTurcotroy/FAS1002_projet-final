@@ -42,24 +42,69 @@ library(fs)
 library(lubridate)
 library(tidyverse)
 library(skimr)
+library(re)
 ```
 
 pour télécharger les données directements en ligne
 
 ```{r download, cache=TRUE}
-
-URL <- "https://github.com/FAS1002/A22/raw/b490f67dfd8261c10d37e1d6670a2ac681b4e223/assets/fichiers/olympic_archive.zip"
-
+list.files("data/raw")
 bas_path <- path("data", "raw")
 
-fname <- paste(today(), "olympique_archive.zip", sep = "_")
+telechargement <-function(recurence, nom, url){
+    x =0 
+    trouve = 0
+    if (recurence == "jour") {
+        aujourd <- paste(today(), nom, sep = "_") 
+        dateChoisi <- today()
+        print(aujourd)
+        
+    } else if (recurence == "mois") {
+        aujourd <- paste(month(today()), nom, sep = "_")
+        dateChoisi <- month(today())
+        print(aujourd)
+        
+    }
+    
+    
+    while (x <= length(list.files("data/raw"))) {
+        x = x +1
+        
+        
+        if (x > 0 & x <= length(list.files("data/raw"))) {
+            if (aujourd == list.files("data/raw")[x]) {
+                trouve = 1
+                print("trouve")
+            }
+        }
+       
+        
 
-fpath <- path(bas_path, fname)
+    }
+    if (trouve == 0 ) {
+        URL <- url
 
-download.file(url = URL, 
-              destfile = fpath)
+
+        fname <- paste(dateChoisi, nom, sep = "_")
+
+        fpath <- path(bas_path, fname)
+
+        download.file(url = URL, 
+                          destfile = fpath)
+        trouve = 1
+            
+    }
+    return("succes")
+}
+
+telechargement("jour", "Co2_data.csv", "https://nyc3.digitaloceanspaces.com/owid-public/data/co2/owid-co2-data.csv")
+
+telechargement("mois", "energy_data.csv", "https://nyc3.digitaloceanspaces.com/owid-public/data/energy/owid-energy-data.csv")
+
+#telechargement("mois", "expectancy_data.xlsx", "https://docs.google.com/spreadsheets/d/1RheSon1-q4vFc3AGyupVPH6ptEByE-VtnjOCselU0PE/edit#gid=501532268")
 
 
+list.files("data/raw")
 ```
 
 ```{r extraction}
@@ -73,8 +118,14 @@ unzip(zipfile = fpath,
 Nous voyons donc qu'il y a deux nouveaux fichiers :
 
 ```{r read}
- df <-  read.csv(file = path(bas_path, "athlete_events.csv"))
- 
+Co2_name <- paste(today(), "Co2_data.csv", sep = "_") 
+energy_name <- paste(month(today()), "energy_data.csv", sep = "_") 
+expectancy_name <- paste(month(today()), "expectancy_data.xlsx", sep = "_") 
+
+Co2_data <-  read.csv(file = path(bas_path, Co2_name))
+Energy_data <- read.csv(file = path(bas_path, energy_name))
+expectancy_data <- read_excel("data/raw/12_expectancy_data.xlsx")
+
  
  
 ```
