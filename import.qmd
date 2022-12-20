@@ -9,7 +9,7 @@ date: "2022-12-21"
 author:
   - name: "Rémi Turcot-Roy"
     # Votre site web perso ou github
-    url: https://github.com/VOTREUSERNAME
+    url: https://github.com/rTurcotroy
     # les champs d'affiliation sont optionnels, vous pouvez les
     # comment out en ajoutant un # devant.
     affiliation: FAS1002
@@ -25,17 +25,11 @@ citation: true
 bibliography: references.bib
 ---
 
-Il est maintenant le temps de décrire votre projet avant de passer au document suivant, soit l'importation et la manipulation des données.
+# Les données
 
-Je vous conseille d'écrire cette partie en dernier, une fois que vous aurez déjà vos résultats et figures afin d'éviter de réécrire cette page plusieurs fois.
+Pour commencer, il est important de télécharger les données que nous utiliserons pour ce travail. Ceux-ci proviennent de deux source différente et nous avions certaine condition a respecter. Nous devions télécharger les données avec un certain cycle. Pour faire cela nous avons créer une fonction qui demande la récurence des téléchargements, le nom que l'on veut donner au document et l'url du document. Pour les données provenent de Our World in Data^1^ , il a été simple de les télécharger via la fonction. Ce qui n'a pas été le cas avec la seconde base de donnée Gapminder^2^ qui sont sous format .xlsx, mais surtout qui n'a visiblement pas d'url de téléchargement fonctionnel sans l'implication humaine.
 
-::: callout-important
-N'oubliez pas d'inclure vos références sur chacune des pages!
-:::
-
-Par exemple:
-
-> Les données proviennent entre autres de @owidenergy.
+Ainsi, la suite du travail consiste en \['exploration des données et de l'analyse de ceux-ci
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
 library(fs)
@@ -121,3 +115,5 @@ Energy_data <- read.csv(file = path(bas_path, energy_name))
  
  
 ```
+
+Les données proviennent entre autres de: @owidenergy, @gaplife, @owidco2

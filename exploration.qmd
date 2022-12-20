@@ -9,7 +9,7 @@ date: "2022-12-21"
 author:
   - name: "Rémi Turcot-Roy"
     # Votre site web perso ou github
-    url: https://github.com/VOTREUSERNAME
+    url: https://github.com/rTurcotroy
     # les champs d'affiliation sont optionnels, vous pouvez les
     # comment out en ajoutant un # devant.
     affiliation: FAS1002
@@ -151,6 +151,8 @@ p1+p2
 
 Ces deux graphique montre tout de même la corélation qui pourrait existé entre les deux variables. Il est facile de remarquer que les courbes se suivent sauf pour celle de l'Europe et de l'Amérique qui contrairement a la production encore croissante de leur energie la production de co2 est en faible baisse. Cela s'expliquerait du fait que ces deux continents cherche à réduire leur production d'électricité via les combustibles fossiles.
 
+## Teste pour connaitre le temps écoulé du fichier
+
 ```{r}
 library(lubridate)
 Life <- expectancy_Co2 %>% 
@@ -163,3 +165,11 @@ nb_jour <- as.numeric(difftime(as.POSIXct(today()),
 
 nb_jour
 ```
+
+Création d'un fichier csv de la base de donnée data_final.
+
+```{r}
+write.csv(data_final, "data/raw/data_final.csv", row.names = FALSE)
+```
+
+Les données proviennent entre autres de: @owidenergy, @gaplife, @owidco2

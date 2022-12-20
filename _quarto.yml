@@ -2,7 +2,7 @@ project:
   type: website
 
 website:
-  title: "FAS1002_projet-pratique"
+  title: "FAS1002_projet-Final"
   description: | 
     "Page d'accueil du travail final pour le cours FAS1002 -
     Initiation à la programmation en sciences sociales à
@@ -10,14 +10,14 @@ website:
 
   reader-mode: true
 # URL de votre site une fois publié - <VOTREUSERNAME> à changer 
-  site-url: https://VOTREUSERNAME.github.io/FAS1002_projet-final/
+  site-url: https://rturcotroy.github.io/FAS1002_projet-final/
 # URL de votre répertoire - VOTREUSERNAME/VOTRE-RÉPERTOIRE à changer
-  repo-url: https://github.com/VOTREUSERNAME/VOTRE-RÉPERTOIRE/
+  repo-url: https://github.com/rTurcotroy/FAS1002_projet-final
   repo-actions: [edit, issue, source]
   
 # Options à changer pour le menu ou la barre de navigation
   navbar:
-    background: primary
+    background: light
     logo: /assets/img/FAS1002.png 	# Logo image to be displayed left of the title.
     logo-alt: Logo du cours FAS1002
     # Alternate text for the logo image.
@@ -28,11 +28,9 @@ website:
         text: Page d'accueil
       - intro.qmd
       - href: import.qmd
-        text: Titre à changer
+        text: Importation des données
       - exploration.qmd
-    right:
-      - href: a-propos.qmd
-        text: Page à droite 
+
 
 # footer
   page-footer:
@@ -40,8 +38,8 @@ website:
       [Propulsé par des logiciels libres 💖](https://github.com/FAS1002/A22){.nav-link}
     center:
     # Changer VOTRE NOM pour ce que vous voulez
-      - text: "VOTRE NOM"
-        href: mailto:VOTRECOURRIEL@example.com
+      - text: "Rémi Turcot-Roy"
+        href: mailto:remi.turcot-roy@umontreal.ca
     right:
       - icon: github
         href: https://github.com/FAS1002/
@@ -53,7 +51,7 @@ website:
 format:
   html:
     theme:
-      light: [flatly, assets/scss/styles.css]
+      light: united
       dark: [darkly, assets/scss/styles-dark.scss]
     code-fold: true
     code-copy: true

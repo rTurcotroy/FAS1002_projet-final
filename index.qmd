@@ -2,31 +2,15 @@
 title: "FAS1002_projet-final"
 ---
 
-Vous pouvez faire le résumé de votre projet directement sur cette page et utiliser le document [intro](intro.qmd) pour décrire votre projet.
+Ce projet vise à démontrer les compétences que nous avons développé au cour de la session dans le cours FAS1002. Il a donc fallu construire une structure de page web qui peu contenir tout un projet de recherche en partant du téléchargement de données, jusqu'à la présentation. Nous avions donc certaine contrainte pour effectuer le travail d'on l'utilisation de base de donnée particulière. 
 
-Chaque page est en fait un fichier Quarto standard. [^1]
+N'étant pas un cours d'analyse, mais un cour qui d'introduction à la programmation via R. L'analyse qui est faite dans ce travail est plus vue comme un exemple de recherche qu'une analyse complète. 
 
-[^1]: Avec des petits trucs sympa comme des notes de bas de page. Ces documents sont les mêmes que nous avons utilisés tout au long de la session.
+Ainsi, cette page n'est que la présentation du projet. Le début commence à la page [intro](intro.qmd) ou il y a une description du travail.
 
-## Vous pourrez inclure des graphiques
+Toutefois, par manque de temps et de compétence toute les notions et exigance du travaille n'ont pas pu être respecté. Toutefois, j'ai fait de mon mieux. 
 
-Comme la classique pyramide à la ci-dessous par exemple:
 
-```{r pie, fig.cap='Une très belle tarte', tidy=FALSE}
-par(mar = c(0, 1, 0, 1))
-pie(
-  c(280, 60, 20),
-  c('Ciel', 'Côté ensoleillé de la pyramide', 'Côté ombragé de la pyramide'),
-  col = c('#0292D8', '#F7EA39', '#C4B632'),
-  init.angle = -50, border = NA
-)
-```
-
-<aside>Quand même très cool, non? Vous pouvez mettre des annotations sur le côté!</aside>
-
-### Toujours très important de mettre les bons niveaux de titres
-
-Un peu de texte de remplissage pour faire comme si la page était plus longue. *Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.*
 
 ## Remerciements {.appendix}
 
