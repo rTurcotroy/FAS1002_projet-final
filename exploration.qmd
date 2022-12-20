@@ -30,72 +30,135 @@ library(fs)
 library(lubridate)
 library(tidyverse)
 library(skimr)
+library(countrycode)
+library(readxl)
+library(randomForest)
+library(dplyr)
+library(faraway)
+library(randomForest)
+library(tibble)
+
 ```
 
 ## Réimportation des données
 
 ```{r}
- data <-  read.csv(file = "data/raw/athlete_events.csv")
+bas_path <- path("data", "raw")
+Co2_name <- paste(today(), "Co2_data.csv", sep = "_") 
+energy_name <- paste(month(today()), "energy_data.csv", sep = "_") 
+expectancy_name <- paste(month(today()), "expectancy_data.xlsx", sep = "_")  
+ 
+Co2_data <-  read.csv(file = path(bas_path, Co2_name))
+Energy_data <- read.csv(file = path(bas_path, energy_name))
+expectancy_data  <- read_excel("data/raw/12_expectancy_data.xlsx", 
+    sheet = "countries_and_territories")
 ```
 
 ```{r}
-skim(data)
+Co2_data$continent <- countrycode(sourcevar = Co2_data[, "country"],
+                            origin = "country.name",
+                            destination = "continent")
+table(Co2_data$continent)
+
+expectency_modifier <- expectancy_data %>% 
+  pivot_longer(matches("[0-9][0-9][0-9][0-9]"),
+               names_to = "year",
+               values_to = "M_age") %>% 
+    select(-indicator.name, -indicator, -geo) %>% 
+    rename("country" = "geo.name")
+
+expectancy_Co2 <- merge(expectency_modifier, Co2_data, by = c("country","year"))
+expectancy_Co2_energi <- merge(expectancy_Co2, Energy_data, by = c("country", "year"))
+
+expectancy_Co2_energi <- expectancy_Co2_energi %>% 
+    mutate(year = as.numeric(year),
+           M_age = as.numeric(M_age))
+
+
+data_final <- expectancy_Co2_energi %>% 
+    group_by(year, continent) %>% 
+    mutate(moyenneAge = mean(M_age),
+           moyenneCo2 = mean(co2),
+           moyenneCo2Cap = mean(co2_per_capita)) %>%
+    ungroup() %>% 
+    mutate(population  = as.numeric(population.x),
+           moyenneAge = round(moyenneAge)) %>% 
+    select(country, year, M_age, population, co2, co2_per_capita, electricity_demand, electricity_generation, energy_per_capita.x, continent,
+           moyenneAge,moyenneCo2, moyenneCo2Cap )
+
+
+test1 <- rfImpute(moyenneAge ~ . , ntree = 200, iter = 5, data = data_final)
+
+table(data_final$continent)
 ```
 
-## Données extrêmes
+```{r}
+library(lubridate)
+Life <- expectancy_Co2 %>% 
+    mutate(jour_mois = "-01-01") %>%
+    unite(year, jour_mois, col = year, sep = "") %>% 
+    mutate(year_as_date = as.Date(year, format = "%y-%m-%d"))
+
+nb_jour <- as.numeric(difftime(as.POSIXct(today()),
+                               as.POSIXct(as.Date(min(Life$year_as_date), format = "%Y-%m-%d"))))
+
+nb_jour
+```
+
+## Analyse de l'esperence de vie selon le continent
 
 ```{r}
 
-p1 <- ggplot(data,
-       aes(Age))
-
-p1 + geom_histogram(color = "black",
-                    fill = "#facade",
-                    binwidth = 1)
-
-data %>% filter(Age > 78) %>% 
-    select(Name, Sex,Team, Games, Sport, Age)
-
+reg_age <- lm(M_age~ country+year+population+co2, data=data_final)
+summary(reg_age)
 
 ```
 
-## Age vs Sex
+Cette regression lineaire semble indiquer une certaine corelation entre les pays et l'esperance de vie.
+
+```{r}
+reg_age_continent <- lm(M_age ~ continent + population + year, data = data_final)
+summary(reg_age_continent)
+```
+
+On voit donc que l'oceanie est le continent ou l'esperance de vie est la meilleur et progresse le mieux.
+
+```{r}
+ggplot(data_final,
+       aes(year, moyenneAge, color = continent))+
+    geom_line()
+```
+
+```{r}
+ggplot(data_final,
+       aes(year, moyenneCo2, color = continent))+
+    geom_line()
+
+```
+
+## Analyse de la production de Co2
 
 ```{r}
 
-p2 <- ggplot(data,
-             aes(Sex, Age))+
-    geom_boxplot()
 
-p2
 ```
 
 ## Évolution du ratio Homme / Femme
 
 ```{r}
-evolution <- data %>% 
-    group_by(Year, Sex) %>% 
-    summarise(n = n()) %>% 
-    mutate(ratio = n / sum(n) * 100) %>% 
-    ungroup()
+
 ```
 
 ```{r}
-evolution_f <- evolution %>% filter(Sex == "F")
-evolution_h <- evolution %>% filter(Sex == "M")
+ggplot(demo,
+       aes(year, moyenneAge, color = continent))+
+    geom_line()
 
-ggplot(evolution,
-       aes(Year, ratio, color = Sex))+
-    geom_line()+
-    geom_point()
+ggplot(demo,
+       aes(year, moyenneCo2, color = continent))+
+    geom_line()
 
-ggplot(evolution_f,
-       aes(Year, ratio))+
-    geom_line()+
-    geom_point()
-
-ggplot(evolution_h,
-       aes(Year, ratio))+
-    geom_line()+
-    geom_point()
+ggplot(demo,
+       aes(year, moyenneCo2Cap, color = continent))+
+    geom_line()
 ```
