@@ -1,13 +1,13 @@
 ---
-title: "Titre de votre page d'importation"
+title: "Importation des données"
 title-block-banner: true
 description: | 
-  Petite description de cette page.
+  Fonction qui permet le téléchargement des bases de données.
 # à changer
 date: "2022-12-21"
 # Modifier les détails que vous voulez
 author:
-  - name: "Prénom Nom"
+  - name: "Rémi Turcot-Roy"
     # Votre site web perso ou github
     url: https://github.com/VOTREUSERNAME
     # les champs d'affiliation sont optionnels, vous pouvez les
@@ -42,7 +42,7 @@ library(fs)
 library(lubridate)
 library(tidyverse)
 library(skimr)
-library(re)
+
 ```
 
 pour télécharger les données directements en ligne
@@ -101,7 +101,7 @@ telechargement("jour", "Co2_data.csv", "https://nyc3.digitaloceanspaces.com/owid
 
 telechargement("mois", "energy_data.csv", "https://nyc3.digitaloceanspaces.com/owid-public/data/energy/owid-energy-data.csv")
 
-telechargement("mois", "expectancy_data.xlsx", "https://raw.githubusercontent.com/Gapminder-Indicators/lex/master/lex-by-gapminder.xlsx")
+#telechargement("mois", "expectancy_data.xlsx", "https://raw.githubusercontent.com/Gapminder-Indicators/lex/master/lex-by-gapminder.xlsx")
 
 
 
@@ -115,8 +115,8 @@ expectancy_name <- paste(month(today()), "expectancy_data.xlsx", sep = "_")
 
 Co2_data <-  read.csv(file = path(bas_path, Co2_name))
 Energy_data <- read.csv(file = path(bas_path, energy_name))
-expectancy_data <- read_excel("data/raw/12_expectancy_data.xlsx", 
-    sheet = "countries_and_territories")
+#expectancy_data <- read_excel("data/raw/12_expectancy_data.xlsx", 
+#sheet = "countries_and_territories")
 
  
  

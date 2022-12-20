@@ -1,13 +1,13 @@
 ---
-title: "Titre de votre page d'exploration"
+title: "Analyse des données"
 title-block-banner: false
 description: | 
-  Petite description de cette page.
+  Résumé des analyses faites aux données.
 # à changer
 date: "2022-12-21"
 # Modifier les détails que vous voulez
 author:
-  - name: "Prénom Nom"
+  - name: "Rémi Turcot-Roy"
     # Votre site web perso ou github
     url: https://github.com/VOTREUSERNAME
     # les champs d'affiliation sont optionnels, vous pouvez les
@@ -40,7 +40,11 @@ library(tibble)
 
 ```
 
-## Réimportation des données
+## Introduction 
+
+Avant de débuter les analyses il a fallut retravailler les bases de données. Ainsi, pour cela il a fallut selectionner les variables qui semblaient être interessant pour l'analyse. Considérent que l'analyse porte sur l'esperence de vie nous avons selectionnés des variables qui nous semblais avoir un impact potentiel sur celle-ci. Cela a donc mener a sélectionner 13 variables différentes pour une total de 12832 observations. Toutefois, les observations ne sont pas toute complete. Ce qui a complexifier la seconde analyse, puisque le majorité des NA retrouvés sont dans les variables de production et de consomation d'énergie.
+
+Les actions qui sont donc produite ci-dessous permette d'importer les banques de données préalablement télécharger. Elles sont par la suite intégré l'une a l'autre via les indicateurs de pays et d'années pour créer une seul base de données. Un netoyage des variables et des données est faites par la suite et nous creer de nouvelle variable pour facilité la création de graphique. Il reste donc une base donnée avec les variables choisi préalablement ou l'on a ajouter nos variables et enlever le plus de données manquante.
 
 ```{r}
 bas_path <- path("data", "raw")
@@ -58,7 +62,6 @@ expectancy_data  <- read_excel("data/raw/12_expectancy_data.xlsx",
 Co2_data$continent <- countrycode(sourcevar = Co2_data[, "country"],
                             origin = "country.name",
                             destination = "continent")
-table(Co2_data$continent)
 
 expectency_modifier <- expectancy_data %>% 
   pivot_longer(matches("[0-9][0-9][0-9][0-9]"),
@@ -77,6 +80,8 @@ expectancy_Co2_energi <- expectancy_Co2_energi %>%
 
 data_final <- expectancy_Co2_energi %>% 
     group_by(year, continent) %>% 
+    drop_na(M_age) %>% 
+    drop_na(co2_per_capita) %>% 
     mutate(moyenneAge = mean(M_age),
            moyenneCo2 = mean(co2),
            moyenneCo2Cap = mean(co2_per_capita)) %>%
@@ -84,13 +89,67 @@ data_final <- expectancy_Co2_energi %>%
     mutate(population  = as.numeric(population.x),
            moyenneAge = round(moyenneAge)) %>% 
     select(country, year, M_age, population, co2, co2_per_capita, electricity_demand, electricity_generation, energy_per_capita.x, continent,
-           moyenneAge,moyenneCo2, moyenneCo2Cap )
+           moyenneAge,moyenneCo2, moyenneCo2Cap)
 
-
-test1 <- rfImpute(moyenneAge ~ . , ntree = 200, iter = 5, data = data_final)
+data_energi <- expectancy_Co2_energi%>% 
+    select(country, year, M_age, population.x, co2, electricity_generation, continent) %>% 
+    drop_na(electricity_generation, co2) %>% 
+    group_by(year, continent) %>% 
+    mutate(moyenneElec = mean(electricity_generation),
+           moyenneCo2 = mean(co2)) %>% 
+    ungroup()
 
 table(data_final$continent)
 ```
+
+## Analyse de l'esperence de vie selon le continent
+
+La premiere analyse se tourne vers l'impacte de la localisation d'un individu sur son espérence de vie. Pour comprendre cette impacte nous allons effectuer une régression linéaire multiple avec comme variable dépendante l'espérence de vie et variable indépendante le continent. De plus, nous avons ajouter des variables de contrôle telle que : l'année, la population et le co2 émit.
+
+```{r}
+
+reg_age <- lm(M_age~ continent+year+population+co2, data=data_final)
+summary(reg_age)
+
+```
+
+La regression montre donc une certaine corélation entre l'espérence de vie et le continent. Ainsi, l'espérence de vie est croissante peu importe le continent, mais elle n'ont pas toute la même valeur. L'espérence de vie semble donc plus croissante en europe qu'en afrique par exemple. Les variables de contrôle semble elles aussi avoir une influence. Toutefois, elles ont une moyens grande impacte au vue des estimations. Néanmoins, la population semble être un frein à la croissance de l'espérence de vie. Ce qui est un résultat interressent qui demandrait plus de recherche. Et pour ça par le co2 semble être un plus à cette croissance.
+
+```{r}
+ggplot(data_final,
+       aes(year, moyenneAge, color = continent))+
+    geom_line()
+```
+
+Visuellement il est donc facile de voir cette avantage que certains continents ont sur les autres. Il s'emblerait toutefois, que l'océanie à eu des modifications drastique de sont espérence de vient vers l'an 1980. Cela peu provenir de nouveaux jeux de données qui ont fait leur entrée dans la base de données ou bien un évènement qui aurait impacté l'ensemble du continent. Malheureusement, par manque de temps ils nous étaient imposibles de vérifier ces hypothèses.
+
+## Analyse de la production de Co2
+
+La seconde analyse vise à comprendre ce qui pourrait expliquer la production de co2. Pour cela nous avons créer une nouvelle base de donnée qui a permis de créer la moyenne de co2 par continent. Ainse, le premier test à faire était une régression linéaire multiple comme vue précédement. Nous avons donc pris comme variable dépendante la production de co2 qui est impacté par la variable indépendant de la génération d'électricité. Nous avons par la suite ajouter quelque variables contrôles telle que la population et le continent.
+
+```{r}
+reg_age_continent <- lm(moyenneCo2 ~ electricity_generation + population.x + continent, data = data_energi)
+summary(reg_age_continent) 
+
+```
+
+Les résultats semblent tous avoir une certaine corélation, mais certaines variables sont surprenente. Ce qui remet en cause ces résultats. En premier lieu, oui la génération d'électricité influence positivement le co2, mais il ne semble pas être le facteur avec le plus d'impacte. Le continent semble avoir plus d'impacte et au finale cela pourrait s'expliquer par le type de productions qui est utilisé pour faire de l'électricité. Ce qui fait lien avec la variable population qui est négative. Cela pourrait donc s'expliquer du fait que le fait d'avoir une population nombreuse ne signifie pas la production d'électricité est proportionnel à la population.
+
+```{r}
+library(patchwork)
+p1 <- ggplot(data_energi,
+       aes(year, moyenneCo2, color = continent))+
+    geom_line()
+
+p2 <- ggplot(data_energi,
+       aes(year, moyenneElec, color = continent))+
+    geom_line()
+
+p1+p2
+
+```
+
+Ces deux graphique montre tout de même la corélation qui pourrait existé entre les deux variables. Il est facile de remarquer que les courbes se suivent sauf pour celle de l'Europe et de l'Amérique qui contrairement a la production encore croissante de leur energie la production de co2 est en faible baisse. Cela s'expliquerait du fait que ces deux continents cherche à réduire leur production d'électricité via les combustibles fossiles.
 
 ```{r}
 library(lubridate)
@@ -103,62 +162,4 @@ nb_jour <- as.numeric(difftime(as.POSIXct(today()),
                                as.POSIXct(as.Date(min(Life$year_as_date), format = "%Y-%m-%d"))))
 
 nb_jour
-```
-
-## Analyse de l'esperence de vie selon le continent
-
-```{r}
-
-reg_age <- lm(M_age~ country+year+population+co2, data=data_final)
-summary(reg_age)
-
-```
-
-Cette regression lineaire semble indiquer une certaine corelation entre les pays et l'esperance de vie.
-
-```{r}
-reg_age_continent <- lm(M_age ~ continent + population + year, data = data_final)
-summary(reg_age_continent)
-```
-
-On voit donc que l'oceanie est le continent ou l'esperance de vie est la meilleur et progresse le mieux.
-
-```{r}
-ggplot(data_final,
-       aes(year, moyenneAge, color = continent))+
-    geom_line()
-```
-
-```{r}
-ggplot(data_final,
-       aes(year, moyenneCo2, color = continent))+
-    geom_line()
-
-```
-
-## Analyse de la production de Co2
-
-```{r}
-
-
-```
-
-## Évolution du ratio Homme / Femme
-
-```{r}
-
-```
-
-```{r}
-ggplot(demo,
-       aes(year, moyenneAge, color = continent))+
-    geom_line()
-
-ggplot(demo,
-       aes(year, moyenneCo2, color = continent))+
-    geom_line()
-
-ggplot(demo,
-       aes(year, moyenneCo2Cap, color = continent))+
-    geom_line()
 ```
