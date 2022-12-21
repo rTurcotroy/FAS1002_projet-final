@@ -4,7 +4,7 @@ title-block-banner: true
 description: | 
   Résumé des analyses faites aux données.
 # à changer
-date: "2022-12-21"
+date: "2022-12-20"
 # Modifier les détails que vous voulez
 author:
   - name: "Rémi Turcot-Roy"
@@ -117,7 +117,12 @@ La régression montre donc une certaine corrélation entre l'espérance de vie e
 ```{r}
 ggplot(data_final,
        aes(year, moyenneAge, color = continent))+
-    geom_line()
+    geom_line()+
+    labs(title = "Moyenne d'espérence de vie",
+         subtitle = "par continent",
+       x = "Année",
+       y = "Espérence de vie")+
+    theme_classic()
 ```
 
 Visuellement il est donc facile de voir cet avantage que certains continents ont sur les autres. Il se semblerait toutefois, que l'Océanie a eu des modifications drastiques de son espérance de vient vers l'an 1980. Cela peut provenir de nouveaux jeux de données qui ont fait leur entrée dans la base de données ou bien un évènement qui aurait impacté l'ensemble du continent. Malheureusement, par manque de temps ils nous étaient impossibles de vérifier ces hypothèses.
@@ -138,11 +143,22 @@ Les résultats semblent tous avoir une certaine corrélation, mais certaines var
 library(patchwork)
 p1 <- ggplot(data_energi,
        aes(year, moyenneCo2, color = continent))+
-    geom_line()
+    geom_line()+
+    labs(title = "Co2 émis par année",
+         subtitle = "par continent",
+       x = "Année",
+       y = "Moyenne de co2 émis")+
+    theme_classic()+
+    theme(legend.position="none")
 
 p2 <- ggplot(data_energi,
        aes(year, moyenneElec, color = continent))+
-    geom_line()
+    geom_line()+
+    labs(title = "Électricité généré par an",
+         subtitle = "par continent",
+       x = "Année",
+       y = "Électricité généré")+
+    theme_classic()
 
 p1+p2
 
@@ -151,6 +167,8 @@ p1+p2
 Ces deux graphiques montrent tout de même la corrélation qui pourrait exister entre les deux variables. Il est facile de remarquer que les courbes se suivent sauf pour celle de l'Europe et de l'Amérique qui contrairement a la production encore croissante de leur énergie la production de co2 est en faible baisse. Cela s'expliquerait du fait que ces deux continents cherchent à réduire leur production d'électricité via les combustibles fossiles.
 
 ## Teste pour connaître le temps écoulé du fichier
+
+Ne fonctionne pas!
 
 ```{r}
 library(lubridate)

@@ -12,12 +12,17 @@ Répertoire comportant le travail final en FAS1002
 ├── assets
 │   ├── img
 │   │   └── FAS1002.png
+│   │   └── logo.png
 │   └── scss
 │       ├── styles.css
 │       └── styles-dark.scss
 ├── data
 │   ├── processed
 │   └── raw
+│       └── data_final.csv
+│       └── date_Co2_data.csv
+│       └── date_expectancy_data.csv
+│       └── data_energy_data.csv
 ├── exploration.qmd
 ├── FAS1002_projet-final.Rproj
 ├── figures
