@@ -27,9 +27,9 @@ bibliography: references.bib
 
 # Les données
 
-Pour commencer, il est important de télécharger les données que nous utiliserons pour ce travail. Ceux-ci proviennent de deux source différente et nous avions certaine condition a respecter. Nous devions télécharger les données avec un certain cycle. Pour faire cela nous avons créer une fonction qui demande la récurence des téléchargements, le nom que l'on veut donner au document et l'url du document. Pour les données provenent de Our World in Data^1^ , il a été simple de les télécharger via la fonction. Ce qui n'a pas été le cas avec la seconde base de donnée Gapminder^2^ qui sont sous format .xlsx, mais surtout qui n'a visiblement pas d'url de téléchargement fonctionnel sans l'implication humaine.
+Pour commencer, il est important de télécharger les données que nous utiliserons pour ce travail. Ceux-ci proviennent de deux sources différentes et nous avions certaines conditions à respecter. Nous devions télécharger les données avec un certain cycle. Pour faire cela, nous avons créé une fonction qui demande la récurrence des téléchargements, le nom que l'on veut donner au document et l'URL du document. Pour les données provenant de Our World in Data^1^ , il a été simple de les télécharger via la fonction. Ce qui n'a pas été le cas avec la seconde base de données Gapminder^2^ qui sont sous format ,xlsx, mais surtout qui n'a visiblement pas d'URL de téléchargement fonctionnel sans l'implication humaine.
 
-Ainsi, la suite du travail consiste en \['exploration des données et de l'analyse de ceux-ci
+Ainsi, la suite du travail consiste en l'exploration des données et de l'analyse de ceux-ci
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
 library(fs)
@@ -38,8 +38,6 @@ library(tidyverse)
 library(skimr)
 
 ```
-
-pour télécharger les données directements en ligne
 
 ```{r download, cache=TRUE}
 list.files("data/raw")
@@ -116,4 +114,10 @@ Energy_data <- read.csv(file = path(bas_path, energy_name))
  
 ```
 
-Les données proviennent entre autres de: @owidenergy, @gaplife, @owidco2
+Les données proviennent entre autres de:
+
+@owidenergy
+
+@gaplife
+
+@owidco2

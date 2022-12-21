@@ -2,12 +2,12 @@
 title: "Introduction des données"
 title-block-banner: true
 description: | 
-  Petite description de votre projet en une ligne.
+  Description description du projet.
 # à changer
 date: "2022-12-21"
 # Modifier les détails que vous voulez
 author:
-  - name: "Prénom Nom"
+  - name: "Rémi Turcot-Roy"
     # Votre site web perso ou github
     url: https://github.com/rTurcotroy
     # les champs d'affiliation sont optionnels, vous pouvez les
@@ -25,8 +25,14 @@ citation: true
 bibliography: references.bib
 ---
 
-Il est maintenant le temps de décrire votre projet avant de passer au document suivant, soit l'importation et la manipulation des données.
+Ce projet a donc pour but de démontrer les nouvelles connaissances que nous avons acquises au cours de la session. Pour cela, j'ai téléchargé directement les données via l'URL des bases de données et validé la récurrence de ceux-ci. Pour faciliter cette étape, j'ai créé une fonction qui prend le nom, l'URL et la récurrence du téléchargement. Cette procédure fonctionne bien sauf pour les données en provenance de gapminder puisque le lien URL de téléchargement demandait un accès restreint.
 
-Je vous conseille d'écrire cette partie en dernier, une fois que vous aurez déjà vos résultats et figures afin d'éviter de réécrire cette page plusieurs fois.
+Par la suite, l'analyse est faite via l'intégration de trois bases de données vers une variable. Cette base de données est donc par la suite modifiée pour traiter les variables qui nous intéressent. Dans le cadre de cette analyse nous voulions regarder la progression des variables co2, espérance de vie, demande en énergie à travers les années. Cela dans le but de comprendre ce qui peut influencer l'espérance de vie. Nous avons aussi créé une nouvelle variable soit le continent en prenant comme référent le pays. Cela permet donc de faire des visualisations plus claires en utilisant les continents comme variable de localisation. Il a aussi important de retirer les variables manquantes. Ce qui a tout de même un certain impacte sur les résultats.
 
-Les données proviennent entre autres de: @owidenergy, @gaplife, @owidco2
+Les données proviennent entre autres de:
+
+@owidenergy
+
+@gaplife
+
+@owidco2

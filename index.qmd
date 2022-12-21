@@ -2,16 +2,12 @@
 title: "FAS1002_projet-final"
 ---
 
-Ce projet vise à démontrer les compétences que nous avons développé au cour de la session dans le cours FAS1002. Il a donc fallu construire une structure de page web qui peu contenir tout un projet de recherche en partant du téléchargement de données, jusqu'à la présentation. Nous avions donc certaine contrainte pour effectuer le travail d'on l'utilisation de base de donnée particulière. 
-
-N'étant pas un cours d'analyse, mais un cour qui d'introduction à la programmation via R. L'analyse qui est faite dans ce travail est plus vue comme un exemple de recherche qu'une analyse complète. 
-
-Ainsi, cette page n'est que la présentation du projet. Le début commence à la page [intro](intro.qmd) ou il y a une description du travail.
-
-Toutefois, par manque de temps et de compétence toute les notions et exigance du travaille n'ont pas pu être respecté. Toutefois, j'ai fait de mon mieux. 
-
-
+| Ce projet vise à démontrer les compétences que nous avons développées au cours de la session dans le cours FAS1002. Il a donc fallu construire unestructure de page web qui peut contenir tout un projet de recherche en partant du téléchargement de données, jusqu'à la présentation. Nous avions donc certaine contrainte pour effectuer le travail d'on l'utilisation de base de données particulière.
+| N'étant pas un cours d'analyse, mais une cour qui d'introduction à la programmation via R. L'analyse qui est faite dans ce travail est plus vue comme un exemple de recherche qu'une analyse complète.
+| Ainsi, cette page n'est que la présentation du projet. Le début commence à la page [intro](intro.qmd) ou il y a une description du travail.
+| Toutefois, par manque de temps et de compétence toutes les notions et exigences du travail n'ont pas pu être respecté. Toutefois, j'ai fait de mon mieux.
+| 
 
 ## Remerciements {.appendix}
 
-J'aimerais remercier toute la cohorte du cours FAS1002 de l'automne 2022 pour leur ouverture et efforts tout au long de la session!
+J'aimerais remercier toute la cohorte du cours FAS1002 de l'automne 2022 pour leur ouverture et effort tout au long de la session!
